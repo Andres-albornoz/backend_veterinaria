@@ -1,13 +1,17 @@
 package com.example.backend_veterinaria.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "servicios")
 public class Servicios {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String codigo;
+    private long codigo;
 
     @Column
     private String categoria;
@@ -22,11 +26,12 @@ public class Servicios {
     @Column
     private String observaciones;
 
-    public Servicios() {}
-    public Servicios(String codigo, String categoria, String nombre, String especie, int duracion, int precio) {}
+    public Servicios(@NotBlank @Size(max = 20) String categoria, @NotBlank @Size(max = 40) String nombre, @NotBlank @Size(max = 20) String especie, @NotNull @PositiveOrZero int duracion, @NotNull @PositiveOrZero int precio, @NotBlank @Size(max = 100) String observaciones) {}
+    public Servicios(String codigo, String categoria, String nombre, String especie, int duracion, int precio, String observaciones) {}
 
-    public String getCodigo() {return codigo;}
-    public void setCodigo(String codigo) {this.codigo = codigo;}
+
+    public long getCodigo() {return codigo;}
+    public void setCodigo(long codigo) {this.codigo = codigo;}
     public String getCategoria() {return categoria;}
     public void setCategoria(String categoria) {this.categoria = categoria;}
     public String getNombre() {return nombre;}
