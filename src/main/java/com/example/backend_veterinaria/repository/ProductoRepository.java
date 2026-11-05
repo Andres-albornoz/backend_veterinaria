@@ -5,12 +5,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-public interface ProductoRepository {
-    @Repository
-    public interface ProductoRepository extends JpaRepository<MedicamentosVacunas, String> {
+@Repository
+public interface ProductoRepository extends JpaRepository<MedicamentosVacunas, String> {
 
-        // Método personalizado para filtrar por categoría si lo necesitas
-        List<MedicamentosVacunas> findByCategoria(String categoria);
-    }
-
+    // Método personalizado para filtrar por categoría si lo necesitas
+    List<MedicamentosVacunas> findByCategoria(String categoria);
 }

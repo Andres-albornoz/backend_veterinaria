@@ -1,8 +1,14 @@
-package com.catalogo.model;
+package com.example.backend_veterinaria.service;
 
 import jakarta.persistence.*;
+import org.springframework.stereotype.Service;
+
 import java.math.BigDecimal;
 
+@Service
+public class CatalogoService {
+}
+/*
 @Entity
 @Table(name = "productos")
 public class Producto {
@@ -37,3 +43,5 @@ public class Producto {
     public Boolean getActivo() { return activo; }
     public void setActivo(Boolean activo) { this.activo = activo; }
 }
+
+ */

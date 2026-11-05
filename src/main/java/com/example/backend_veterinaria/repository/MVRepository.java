@@ -6,10 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-public interface MVRepository extends JpaRepository<MedicamentosVacunas, Long> {
-
-    @Repository
-    public interface MVRepository extends JpaRepository<MedicamentosVacunas, String> {
-        List<MedicamentosVacunas> findByCategoria(String categoria);
-
+@Repository
+public interface MVRepository extends JpaRepository<MedicamentosVacunas, String> {
+    List<MedicamentosVacunas> findByCategoria(String categoria);
 }
