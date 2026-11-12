@@ -13,7 +13,6 @@ import javax.crypto.SecretKey;
 import java.util.Date;
 import java.util.List;
 
-/** Genera y valida los JWT firmados con HS256. */
 @Service
 public class JwtService {
 

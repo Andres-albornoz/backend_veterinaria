@@ -16,10 +16,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
-/**
- * Corre una vez por petición: si viene "Authorization: Bearer <token>" válido,
- * registra al usuario en el SecurityContext. Si no, deja pasar y Spring decide (401 en rutas protegidas).
- */
 @Component
 public class JwtAuthFilter extends OncePerRequestFilter {
 
