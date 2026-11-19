@@ -24,8 +24,6 @@ public class CatalogoService {
         this.medicamentoRepository = medicamentoRepository;
     }
 
-    /* ---------- Productos ---------- */
-
     @Transactional(readOnly = true)
     public List<Producto> listarProductos() {
         return productoRepository.findAll();
