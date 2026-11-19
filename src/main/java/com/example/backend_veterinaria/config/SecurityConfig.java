@@ -29,14 +29,8 @@ import java.util.List;
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    private final JwtAuthFilter jwtFilter;
-
-    public SecurityConfig(JwtAuthFilter jwtFilter) {
-        this.jwtFilter = jwtFilter;
-    }
-
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http, JwtAuthFilter jwtFilter) throws Exception {
         http
                 .csrf(csrf -> csrf.disable()) // API sin cookies de sesión: CSRF no aplica
                 .cors(Customizer.withDefaults())

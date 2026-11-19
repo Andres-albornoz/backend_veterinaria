@@ -6,6 +6,11 @@ services:
       MYSQL_USER: ${DB_USER}
       MYSQL_PASSWORD: ${DB_PASSWORD}
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p${DB_ROOT_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
 
   backend:
     build:
@@ -13,8 +18,15 @@ services:
       dockerfile: src/Dockerfile
     ports:
       - "${BACKEND_PORT}:8080"
+    environment:
+      DB_URL: jdbc:mysql://mysql:3306/${DB_NAME}
+      DB_DRIVER: com.mysql.cj.jdbc.Driver
+      DB_DIALECT: org.hibernate.dialect.MySQLDialect
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
     depends_on:
-      - mysql
+      mysql:
+        condition: service_healthy
 
       ##frontend:
     ##build: ./frontend

@@ -6,7 +6,6 @@ import jakarta.persistence.*;
 @Table(name = "Medicamentos y Vacunas")
 public class MedicamentosVacunas {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String codigo;
 
     @Column

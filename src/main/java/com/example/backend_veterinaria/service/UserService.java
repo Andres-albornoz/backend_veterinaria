@@ -2,44 +2,59 @@ package com.example.backend_veterinaria.service;
 
 import com.example.backend_veterinaria.model.User;
 import com.example.backend_veterinaria.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.backend_veterinaria.security.JwtService;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import java.util.Optional;
-import java.util.UUID;
-import java.util.HashMap;
+
 import java.util.Map;
 
-
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
 
-    public void register(User user){
-        if (userRepository.existsByEmail(user.getEmail())){
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.jwtService = jwtService;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado: " + email));
+        String rol = (user.getRol() == null || user.getRol().isBlank()) ? "USER" : user.getRol();
+        return org.springframework.security.core.userdetails.User
+                .withUsername(user.getEmail())
+                .password(user.getPassword())
+                .roles(rol)
+                .build();
+    }
+
+    public void register(User user) {
+        if (userRepository.existsByEmail(user.getEmail())) {
             throw new IllegalArgumentException("El email ya existe");
         }
-
-        if (user.getRol() == null || user.getRol().isEmpty()){
-            user.setRol("USER");
-        }
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setRol("USER");
         userRepository.save(user);
     }
 
-    public Map<String, String> login(User userLogin){
-        Optional<User> userOptional = userRepository.findByEmail(userLogin.getEmail());
-
-        if(userOptional.isPresent() && userOptional.get().getPassword().equals(userLogin.getPassword())){
-            User user = userOptional.get();
-
-            Map<String, String> response = new HashMap<>();
-            response.put("token", "jwt-simulado-" + UUID.randomUUID().toString());
-            response.put("email", user.getEmail());
-            response.put("roles", user.getRol());
-
-            return response;
+    public Map<String, String> login(User userLogin) {
+        User user = userRepository.findByEmail(userLogin.getEmail())
+                .orElseThrow(() -> new RuntimeException("No autorizado"));
+        if (!passwordEncoder.matches(userLogin.getPassword(), user.getPassword())) {
+            throw new RuntimeException("No autorizado");
         }
-        throw new RuntimeException("No autorizado");
+        return Map.of(
+                "token", jwtService.generarToken(loadUserByUsername(user.getEmail())),
+                "email", user.getEmail(),
+                "roles", user.getRol()
+        );
     }
 }

@@ -26,8 +26,16 @@ public class Servicios {
     @Column
     private String observaciones;
 
-    public Servicios(@NotBlank @Size(max = 20) String categoria, @NotBlank @Size(max = 40) String nombre, @NotBlank @Size(max = 20) String especie, @NotNull @PositiveOrZero int duracion, @NotNull @PositiveOrZero int precio, @NotBlank @Size(max = 100) String observaciones) {}
-    public Servicios(String codigo, String categoria, String nombre, String especie, int duracion, int precio, String observaciones) {}
+    public Servicios() {}
+
+    public Servicios(@NotBlank @Size(max = 20) String categoria, @NotBlank @Size(max = 40) String nombre, @NotBlank @Size(max = 20) String especie, @NotNull @PositiveOrZero int duracion, @NotNull @PositiveOrZero int precio, @NotBlank @Size(max = 100) String observaciones) {
+        this.categoria = categoria;
+        this.nombre = nombre;
+        this.especie = especie;
+        this.duracion = duracion;
+        this.precio = precio;
+        this.observaciones = observaciones;
+    }
 
 
     public long getCodigo() {return codigo;}
