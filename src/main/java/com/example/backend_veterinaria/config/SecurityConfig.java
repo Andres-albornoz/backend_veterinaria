@@ -36,11 +36,20 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        //adaptar ruttas peor estructura general
-
                         .requestMatchers("/api/auth/**", "/h2-console/**", "/error").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/productos/**").authenticated()
-                        .requestMatchers("/api/productos/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET,
+                                "/api/productos/**",
+                                "/api/medicamentos/**",
+                                "/api/medicamentos-vacunas/**",
+                                "/api/service/**",
+                                "/api/servicios/**").authenticated()
+                        .requestMatchers(
+                                "/api/productos/**",
+                                "/api/medicamentos/**",
+                                "/api/medicamentos-vacunas/**",
+                                "/api/service/**",
+                                "/api/servicios/**",
+                                "/api/users/**").hasRole("ADMIN")
                         .anyRequest().authenticated())
                 .exceptionHandling(e -> e.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
                 .headers(h -> h.frameOptions(f -> f.sameOrigin())) // necesario para la consola H2
