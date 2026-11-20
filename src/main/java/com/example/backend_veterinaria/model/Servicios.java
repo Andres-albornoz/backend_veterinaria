@@ -2,7 +2,6 @@ package com.example.backend_veterinaria.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
 
@@ -28,7 +27,7 @@ public class Servicios {
 
     public Servicios() {}
 
-    public Servicios(@NotBlank @Size(max = 20) String categoria, @NotBlank @Size(max = 40) String nombre, @NotBlank @Size(max = 20) String especie, @NotNull @PositiveOrZero int duracion, @NotNull @PositiveOrZero int precio, @NotBlank @Size(max = 100) String observaciones) {
+    public Servicios(@NotBlank @Size(max = 20) String categoria, @NotBlank @Size(max = 40) String nombre, @NotBlank @Size(max = 20) String especie, @PositiveOrZero int duracion, @PositiveOrZero int precio, @NotBlank @Size(max = 100) String observaciones) {
         this.categoria = categoria;
         this.nombre = nombre;
         this.especie = especie;

@@ -1,6 +1,7 @@
 package com.example.backend_veterinaria.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 
 public record MedicamentoDTO(
@@ -10,7 +11,7 @@ public record MedicamentoDTO(
         String principioActivo,
         String presentacion,
         String especie,
-        @PositiveOrZero int stock,
-        @PositiveOrZero int precio
+        @NotNull @PositiveOrZero Integer stock,
+        @NotNull @PositiveOrZero Integer precio
 ) {
 }
